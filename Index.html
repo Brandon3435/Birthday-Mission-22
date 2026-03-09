@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Birthday Mission</title>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+
+body{
+    font-family: monospace;
+    text-align:center;
+    background:#000;
+    color:#00ff88;
+}
+
+/* intro terminal style */
+
+#intro{
+    margin-top:80px;
+    font-size:22px;
+    line-height:1.6;
+}
+
+.cursor{
+    display:inline-block;
+    width:10px;
+    background:#00ff88;
+    animation:blink 1s infinite;
+}
+
+@keyframes blink{
+    50%{opacity:0;}
+}
+
+/* game content */
+
+.level{
+    display:none;
+    margin-top:40px;
+    color:white;
+}
+
+input{
+    padding:10px;
+    font-size:16px;
+}
+
+button{
+    padding:10px 20px;
+    margin-top:10px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+</style>
+
+<script>
+
+const introLines = [
+"Initializing birthday protocol...",
+"Scanning user...",
+"Target identified... Keona.",
+"Mission unlocked.",
+"Good luck."
+];
+
+let lineIndex = 0;
+let charIndex = 0;
+
+function typeIntro(){
+
+    let introDiv = document.getElementById("intro");
+
+    if(lineIndex < introLines.length){
+
+        let currentLine = introLines[lineIndex];
+
+        if(charIndex < currentLine.length){
+
+            introDiv.innerHTML += currentLine.charAt(charIndex);
+            charIndex++;
+
+            setTimeout(typeIntro,40);
+
+        }else{
+
+            introDiv.innerHTML += "<br>";
+            charIndex = 0;
+            lineIndex++;
+
+            setTimeout(typeIntro,500);
+        }
+
+    }else{
+
+        setTimeout(function(){
+
+            document.getElementById("intro").style.display="none";
+            document.getElementById("level1").style.display="block";
+
+        },800);
+    }
+}
+
+window.onload = typeIntro;
+
+
+
+function checkAnswer(level, correctAnswer){
+
+    let userInput = document.getElementById("input"+level).value
+        .toLowerCase()
+        .trim();
+
+    if(userInput.includes(correctAnswer)){
+
+        document.getElementById("level"+level).style.display = "none";
+        document.getElementById("level"+(level+1)).style.display = "block";
+
+        if(level === 8){
+
+            confetti({
+                particleCount: 200,
+                spread: 120,
+                origin: { y: 0.6 }
+            });
+
+        }
+
+    }else{
+
+        alert("Wrong answer 👀 Try again.");
+
+    }
+}
+
+/* allow ENTER key submission */
+
+document.addEventListener("keypress", function(event){
+
+    if(event.key === "Enter"){
+
+        let visibleLevel = document.querySelector(".level:not([style*='display: none'])");
+
+        if(visibleLevel){
+
+            let levelNumber = visibleLevel.id.replace("level","");
+
+            let button = visibleLevel.querySelector("button");
+
+            if(button) button.click();
+
+        }
+
+    }
+
+});
+
+</script>
+</head>
+
+<body>
+
+<div id="intro"></div>
+
+<h1>🎂 Birthday Internet Mission 🎂</h1>
+<p>Complete all 8 levels to unlock the final surprise.</p>
+
+
+<!-- LEVEL 1 -->
+
+<div id="level1" class="level">
+
+<h2>Level 1</h2>
+<p>Name of the artist the instrumentals belong to</p>
+
+<input id="input1" placeholder="Your answer">
+<br>
+<button onclick="checkAnswer(1,'sabrina carpenter')">Submit</button>
+
+</div>
+
+
+<!-- LEVEL 2 -->
+
+<div id="level2" class="level">
+
+<h2>Level 2</h2>
+<p>In the lyric "Too bad your ___ don't do it for ya"</p>
+
+<input id="input2">
+<br>
+<button onclick="checkAnswer(2,'ex')">Submit</button>
+
+</div>
+
+
+<!-- LEVEL 3 -->
+
+<div id="level3" class="level">
+
+<h2>Level 3</h2>
+<p>Name a sport field that your ex laid his naked butt cheeks on for you</p>
+
+<input id="input3">
+<br>
+<button onclick="checkAnswer(3,'hockey')">Submit</button>
+
+</div>
+
+
+<!-- LEVEL 4 -->
+
+<div id="level4" class="level">
+
+<h2>Level 4</h2>
+<p>Coordinates 50.9414° N, 6.9658° E point to the imposter among us. What's their name?</p>
+
+<input id="input4">
+<br>
+<button onclick="checkAnswer(4,'key')">Submit</button>
+
+</div>
+
+
+<!-- LEVEL 5 -->
+
+<div id="level5" class="level">
+
+<h2>Level 5</h2>
+<p>When the Kalogeras sisters went Olympic training, what cracked Demitra according to her?</p>
+
+<input id="input5">
+<br>
+<button onclick="checkAnswer(5,'curling')">Submit</button>
+
+</div>
+
+
+<!-- LEVEL 6 -->
+
+<div id="level6" class="level">
+
+<h2>Level 6</h2>
+<p>So based on the ____</p>
+
+<input id="input6">
+<br>
+<button onclick="checkAnswer(6,'bones')">Submit</button>
+
+</div>
+
+
+<!-- LEVEL 7 -->
+
+<div id="level7" class="level">
+
+<h2>Level 7</h2>
+<p>Memory lane: What's the scientific name of the tree that was covering my face when the old lady took our picture?</p>
+
+<input id="input7">
+<br>
+<button onclick="checkAnswer(7,'cycas thouarsii')">Submit</button>
+
+</div>
+
+
+<!-- LEVEL 8 -->
+
+<div id="level8" class="level">
+
+<h2>Final Level 🎉</h2>
+
+<p>
+They say beauty is in the eye of the beholder, but Ralf-Dieter Scholz and I share one trait.  
+Exactly 10 years apart — him in 2013 and me in 2023 — the discovery of objective beauty.  
+On this day both stars align as light meets existence.  
+The light signifies the lengths I travel for you and the age tells how you're pushing thirty.  
+How many years is this star? (Not you grandma)
+</p>
+
+<input id="input8">
+<br>
+<button onclick="checkAnswer(8,'22 light years')">Submit</button>
+
+</div>
+
+
+<!-- FINAL MESSAGE -->
+
+<div id="level9" class="level">
+
+<h1>🎉 Mission Complete 🎉</h1>
+<p>Happy Birthday!</p>
+<p>Your reward: To be announced</p>
+
+</div>
+
+</body>
+</html>
